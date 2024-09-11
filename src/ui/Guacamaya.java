@@ -7,6 +7,7 @@ public class Guacamaya {
     public static Scanner reader;
     public static double[] precios;
     public static int[] unidades;
+    public static double[] preciosparciales;
 
     public static void main(String[] args) {
 
@@ -55,17 +56,21 @@ public class Guacamaya {
                     solicitarDatos();
                     break;
                 case 2:
+                    calcularTotalUnidadesVendidas();
                     System.out.println("\nLa cantidad total de unidades vendidas en el dia fue de: "+calcularTotalUnidadesVendidas());
                     break;
                 case 3:
+                    calcularPrecioPromedio();
                     System.out.println("\nEl precio promedio de las referencias de producto vendidas en el dia fue de: "+calcularPrecioPromedio());
                     break;
                 case 4:
+                    calcularVentasTotales();
                     System.out.println("\nLas ventas totales (dinero recaudado) durante el dia fueron: "+calcularVentasTotales());
                     break;
                 case 5:
                     System.out.println("\nDigite el limite minimo de ventas a analizar");
                     double limite = reader.nextDouble();
+                    consultarReferenciasSobreLimite(limite);
                     System.out.println("\nDe las "+precios.length+" referencias vendidas en el dia, "+consultarReferenciasSobreLimite(limite)+" superaron el limite minimo de ventas de "+limite);
                     break;
                 case 6:
@@ -96,35 +101,108 @@ public class Guacamaya {
 
         precios = new double[referencias];
         unidades = new int[referencias];
+        preciosparciales = new double[referencias]; //agregado
 
     }
 
+     /**
+     * Descripcion: Este metodo se encarga de solicitar al cliente el precio de los prodcutos y la cantidad de ellos, para ser almacenados y utilizados más adelante
+     * pre: El arreglo debe estar inicializado
+     * pos:el arreglo queda modificado con los valores ingresados
+     */
+
     public static void solicitarDatos(){
+
+        for (int i=0; i<precios.length;i++){
+            System.out.println("\ndigite el precio de la referencia "+ (i+1));
+            double parcialp = reader.nextDouble();
+            precios[i] = parcialp;
+
+            System.out.println("\ndigite la cantidad de unidades vendidas "+ (i+1));
+            int parcialU = reader.nextInt();
+            unidades[i] = parcialU;
+
+        }
+
+
 
      
     }
 
+    /**
+     * Descripcion: Este metodo calcula el total de unidades vendidas sumando el arreglo que los contiene hasta llegar al tamaño del arreglo y devuelve una variable donde se va sumando
+     * pre:El arreglo debe estar inicializado para hacer operaciones con este
+     */
+
     public static int calcularTotalUnidadesVendidas(){
 
-        return 0;
+        int suma = 0;
+        for (int totalunidades : unidades) { // se usa para que calificacion vaya tomando el valor de los elementos del arreglo y los vaya somando a la variable suma (Se inesvtigó en internet)
+             suma += totalunidades;
+
+        }
+
+        
+        return suma;
 
     }
 
+     /**
+     * Descripcion: Este metodo se encarga de calcular el promedio multiplicando los arreglos, almacenandolos en una variable y sumando la misma,  y dividiendolos entre ellos 
+     * pre:El arreglo debe estar inicializado igual que en el caso anterior para hacer una operación
+     */
+
     public static double calcularPrecioPromedio(){
 
-        return 0;
+        double sumaprecio = 0;
+        for (double totalprecio : precios) { // se usa para que calificacion vaya tomando el valor de los elementos del arreglo y los vaya somando a la variable suma (Se inesvtigó en internet)
+             sumaprecio += totalprecio;
+
+        }
+
+        double promedioprecio = sumaprecio/precios.length;
+
+
+        return promedioprecio;
 
     }
 
     public static double calcularVentasTotales(){
 
-        return 0;
+        double totalventasparcial = 0;
+
+        for (int i=0; i<precios.length;i++){
+            double p = precios[i];
+            int u = unidades[i];
+            double parcial = p*u;
+            preciosparciales[i] = parcial; //agregado
+            totalventasparcial += parcial; 
+
+        }
+
+
+        return totalventasparcial;
 
     }
 
     public static int consultarReferenciasSobreLimite(double limite){
 
-        return 0;
+        calcularVentasTotales();
+
+        int contador = 0;
+
+        for (int i=0; i<preciosparciales.length;i++){
+            if (preciosparciales[i]>limite){
+
+               contador ++;
+
+            }
+
+        }
+
+
+
+        return contador;
 
     }
 
